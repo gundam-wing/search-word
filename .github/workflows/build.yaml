@@ -2,6 +2,9 @@ name: Release Binary
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   build-release:
     runs-on: macos-latest
@@ -13,11 +16,10 @@ jobs:
         run: echo "version=$(git describe --always --dirty)" >> $GITHUB_OUTPUT
 
       - name: Install Rust
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          target: aarch64-apple-darwin
-          override: true
+          targets: aarch64-apple-darwin
 
       - name: Build for MacOS
         run: |
